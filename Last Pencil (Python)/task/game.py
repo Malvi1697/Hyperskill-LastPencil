@@ -41,48 +41,38 @@ def allowed_check(variable_input):
     else:
         return False
 
+
 import random
 
 player_1 = "John"
 player_2 = "Jack"
 pencils = input("How many pencils would you like to use:\n")
+
 # Numeric / Positive check for pencils.
-pencils_numeric = numeric_check(pencils)
-pencils_positive = positive_check(pencils)
-
-
-while (not pencils_numeric) or (not pencils_positive):
-    while not pencils_numeric:
+while True:
+    if not numeric_check(pencils):
         pencils = input("The number of pencils should be numeric\n")
-        pencils_numeric = numeric_check(pencils)
-        pencils_positive = positive_check(pencils)
-
-    while pencils_numeric and (not pencils_positive):
-        pencils = input("The number of pencils should be positive\n")
-        pencils_numeric = numeric_check(pencils)
-        pencils_positive = positive_check(pencils)
-pencils = int(pencils)
-
+    else:
+        if not positive_check(pencils):
+            pencils = input("The number of pencils should be positive\n")
+        else:
+            pencils = int(pencils)
+            break
 
 starter = input("Who will be the first (John, Jack):\n")
-# Check if first players name is input correctly.
-starter_correct = player_check(player_1, player_2, starter)
 
-while not starter_correct:
+# Check if first players name is input correctly.
+while not player_check(player_1, player_2, starter):
     starter = input(f"Choose between '{player_1}' and '{player_2}'\n")
     starter_correct = player_check(player_1, player_2, starter)
-
 
 while True:
     if starter == player_1:
         remove = input("|" * pencils + f"\n{starter}'s turn!\n")
-        remove_numeric = numeric_check(remove)
-        remove_allowed = allowed_check(remove)
-        while (not remove_numeric) or (not remove_allowed):
+        while (not numeric_check(remove)) or (not allowed_check(remove)):
             remove = input("Possible values: '1', '2' or '3'\n")
             remove_numeric = numeric_check(remove)
             remove_allowed = allowed_check(remove)
-            # The block above only checks if the input value is allowed (int and 1-3)
         remove = int(remove)
 
         while pencils - remove < 0:
@@ -118,4 +108,3 @@ while True:
         starter = player_2
     else:
         starter = player_1
-
